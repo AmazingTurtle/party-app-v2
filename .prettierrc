@@ -1,0 +1,6 @@
+{
+  "singleQuote": true,
+  "trailingComma": "all",
+  "importOrder": ["^react$", "^next$", "^next/", "^next(.*?)/", "^@headlessui/", "^@heroicons/", "<THIRD_PARTY_MODULES>", "^[./]", "\\.json$", "\\.css$", "^styles/(.*?)$", "^assets/(.*?)\\.png$", "^assets/(.*?)\\.svg$"],
+  "plugins": ["@trivago/prettier-plugin-sort-imports"]
+}

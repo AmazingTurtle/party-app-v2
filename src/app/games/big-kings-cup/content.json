@@ -1,0 +1,110 @@
+{
+  "cards": [
+    "1c",
+    "1d",
+    "1h",
+    "1s",
+    "2c",
+    "2d",
+    "2h",
+    "2s",
+    "3c",
+    "3d",
+    "3h",
+    "3s",
+    "4c",
+    "4d",
+    "4h",
+    "4s",
+    "5c",
+    "5d",
+    "5h",
+    "5s",
+    "6c",
+    "6d",
+    "6h",
+    "6s",
+    "7c",
+    "7d",
+    "7h",
+    "7s",
+    "8c",
+    "8d",
+    "8h",
+    "8s",
+    "9c",
+    "9d",
+    "9h",
+    "9s",
+    "10c",
+    "10d",
+    "10h",
+    "10s",
+    "11c",
+    "11d",
+    "11h",
+    "11s",
+    "12c",
+    "12d",
+    "12h",
+    "12s",
+    "13c",
+    "13d",
+    "13h",
+    "13s"
+  ],
+  "explain": {
+    "1": {
+      "title": "Alle trinken",
+      "text": "Der Kollektivpegel wird hochgeputscht."
+    },
+    "2": {
+      "title": "Kategorie Wörter",
+      "text": "Suche ein Genre aus (z.B. Obstarten, Getränkemarken, Zigaretten) und nenne einen Begriff daraus. Reihum muss jeder ein neues Wort aus dem Genre nennen. Der erste, dem keins mehr einfällt oder einen bereits genannten Begriff nennt, muss einen Schluck trinken!"
+    },
+    "3": {
+      "title": "Reimen",
+      "text": "Suche ein beliebiges Wort aus (z.B. Tisch). Reihum muss jeder ein sich darauf reimendes Wort (z.B. Fisch,..) nennen. Der erste, dem keins mehr einfällt oder einen bereits genannten Begriff nennt, muss einen Schluck trinken!"
+    },
+    "4": {
+      "title": "Fragemeister",
+      "text": "Dir darf keiner mehr eine Frage beantworten – egal welcher Art. Dies kann und sollst du natürlich ausnutzen, um die anderen zum Trinken zu bringen. Denn wer antwortet, muss trinken. Du hast den Status „Fragemeister“ solange, bis ein neuer Spieler dazu ernennt wird."
+    },
+    "5": {
+      "title": "Counter",
+      "text": "Suche ein Wort sowie eine Zahl zwischen 3 und 9 aus. Zählt reihum. Wenn deine Zahl darin vor kommt oder teilbar ist, muss dein Wort gesagt werden."
+    },
+    "6": {
+      "title": "Schluck verteilen",
+      "text": "Du darfst Schlücke verteilen. Die Anzahl der Schlücke hängt vom Symbol ab. Herzen: 1 Schluck, Karo: 2 Schlücke, Pik: 3 Schlücke, Kreuz: 4 Schlücke."
+    },
+    "7": {
+      "title": "Selbst trinken",
+      "text": "Dazu gibt es keine Erklärung."
+    },
+    "8": {
+      "title": "Daumenmeister",
+      "text": "Du bist nun der Daumenmeister. Dies bedeutet, dass du beliebig oft und nach Lust und Laune deinen Daumen auf die Tischkante legen kannst. Nun müssen alle anderen ebenfalls ihren Daumen auf die Tischkante legen. Der letzte, der es checkt, muss trinken."
+    },
+    "9": {
+      "title": "Regel ausdenken",
+      "text": "Du darfst dir eine Regel ausdenken, die für den Rest des Spiels gilt! Wer die Regeln missachtet, muss einen Schluck trinken. Vorschläge sind: Man darf generell keine Namen mehr nennen oder alle Leute heißen McLovin – Man darf auf niemanden mehr zeigen – Man muss vorm Trinken aufstehen und sich im Kreis drehen – Man darf das Wort „trinken“ nicht mehr sagen – Man muss mit der linken Hand trinken"
+    },
+    "10": {
+      "title": "10 Schlucke verteilen",
+      "text": "Du darfst an die übrigen Mitspieler zehn Schlucke verteilen. Hierbei gelten wie immer jegliche Regeln."
+    },
+    "11": {
+      "title": "Männer trinken",
+      "text": "Dazu gibt es keine Erklärung."
+    },
+    "12": {
+      "title": "Frauen trinken",
+      "text": "Dazu gibt es keine Erklärung."
+    },
+    "13": {
+      "title": "King's Cup",
+      "text": "Füll ein großes Glas in der Mitte mit einem beliebigen Getränk deiner Wahl, so dass es im Anschluss zu einem Viertel gefüllt ist. Der Spieler, welcher den zweiten König zieht, füllt das Glas bis zur Hälfte, der dritte zu drei Vierteln. Der vierte König muss seinen eigenen Glasinhalt dazukippen und das große Glas (den Big King’s Cup) auf einen Schlag trinken! PROST!"
+    }
+  }
+}

@@ -4,24 +4,108 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --background-start-hex: #dcdcdc;
+  --background-end-hex: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background-start-hex: #0a1012;
+    --background-end-hex: #000000;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  /*noinspection CssInvalidPropertyValue*/
+  .min-h-screen {
+    min-height: -webkit-fill-available;
   }
 }
 
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+          -165deg,
+          transparent 0%,
+          var(--background-end-hex) 100%
+  )
+  var(--background-start-hex);
+}
+
+.privacy-container a,
+a.link {
+  @apply text-teal-800 dark:text-teal-200
+}
+
+.privacy-container {
+  @apply break-words overflow-ellipsis overflow-hidden mb-32
+}
+
+.privacy-container a {
+  @apply break-all
+}
+
+.privacy-container h1 {
+  @apply text-3xl
+}
+
+.privacy-container h2 {
+  @apply text-2xl
+}
+
+.privacy-container h3 {
+  @apply text-xl
+}
+
+.privacy-container p {
+  @apply opacity-80
+}
+
+.privacy-container h1,
+.privacy-container h2,
+.privacy-container h3,
+.privacy-container p,
+.privacy-container ul {
+  @apply mx-4 mb-4
+}
+
+.privacy-container ul {
+  @apply ml-8
+}
+
+.privacy-container li {
+  @apply list-disc
+}
+
+button.button {
+  @apply bg-white/5 text-white font-bold py-4 px-8 rounded-xl transition-all outline outline-2 outline-offset-2 outline-transparent hover:outline-white/20 active:outline-white/40
+}
+
+.game-link {
+  @apply rounded-xl border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-white/5 hover:dark:bg-black/50 bg-gradient-to-tl dark:from-[#01101220] dark:to-[#011012ff] from-[#dee0e520] to-[#Dee0e5ff] shadow-lg
+}
+
+.game-link h2 {
+  @apply mb-2 text-2xl font-semibold
+}
+
+.game-link p {
+  @apply m-0 text-sm opacity-50
+}
+
+.game-never {
+
+}
+.game-truth-or-dare {
+  @apply from-[#080c2720] to-[#080c27ff]
+}
+.game-kings-cup {
+  @apply from-[#18062120] to-[#180621ff]
+}
+.game-gigalo {
+  @apply from-[#23050520] to-[#230505ff]
+}
+.game-bus-driver {
+  @apply from-[#12100420] to-[#121004ff]
 }
