@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import { GameLink } from 'party/app/(index)/_components/game-link';
-import { ColorTransition } from 'party/app/color-transition';
+import { ColorTransition } from 'party/_components/color-transition';
+import { GameLink } from 'party/_components/game-link';
 
 export default function Home() {
   return (
@@ -51,6 +51,13 @@ export default function Home() {
           className="game-bus-driver"
           title="Bus Fahrer"
           description="Bist du Meister im Trinken? Finde es heraus."
+        />
+
+        <GameLink
+          href="/games/five-seconds"
+          className="game-five-seconds"
+          title="5 Sekunden Regel"
+          description="Beantworte die Fragen in 5 Sekunden. Klingt einfach? Ist es nicht."
         />
       </div>
     </>

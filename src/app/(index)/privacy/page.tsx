@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ColorTransition } from 'party/app/color-transition';
+import { ColorTransition } from 'party/_components/color-transition';
 
 export default function Page() {
   return (

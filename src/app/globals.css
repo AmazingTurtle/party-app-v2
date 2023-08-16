@@ -109,3 +109,14 @@ button.button {
 .game-bus-driver {
   @apply from-[#12100420] to-[#121004ff]
 }
+.game-five-seconds {
+  @apply from-[#2C0C1520] to-[#2C0C15ff]
+}
+
+.radial-progress {
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background:
+          radial-gradient(closest-side, var(--background-color) calc(100% - 1px - var(--bar-size)), transparent calc(100% - var(--bar-size))),
+          conic-gradient(var(--bar-color) var(--progress-percent), var(--bar-background-color) 0);
+}

@@ -1,9 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Outfit } from 'next/font/google';
 import { motion, AnimatePresence, useTime } from 'framer-motion';
-import { ColorTransition } from 'party/app/color-transition';
+import { ColorTransition } from 'party/_components/color-transition';
 import { classNames } from 'party/utils/class-names';
 import { useRandomPool } from 'party/utils/use-random-pool';
 import contentJson from './content.json';
@@ -17,11 +17,18 @@ export default function Home() {
 
   const [getNextItem] = useRandomPool(contentJson.questions);
 
+  const popAudioRef = useRef<HTMLAudioElement>(null);
+
   const [prompt, setPrompt] = useState<string | undefined>('');
   const onClickNext = useCallback(() => {
     if (lastChange + transitionTime > time.get()) return;
     setLastChange(time.get());
     setPrompt(getNextItem().question);
+    if (popAudioRef.current) {
+      const popSoundClone = popAudioRef.current.cloneNode() as HTMLAudioElement;
+      popSoundClone.currentTime = 0.1;
+      popSoundClone.play();
+    }
   }, [getNextItem, lastChange, time]);
 
   useEffect(() => {
@@ -30,6 +37,7 @@ export default function Home() {
 
   return (
     <div className="text-left w-full grow flex items-center">
+      <audio src="/sounds/pop.mp3" autoPlay={false} ref={popAudioRef} />
       <ColorTransition targetColor="#010F11" key={lastChange} />
       <div className="w-full">
         <div className="relative text-2xl min-h-[230px] md:min-h-[160px] text-center max-w-xl w-screen mb-8">

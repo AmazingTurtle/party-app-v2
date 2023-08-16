@@ -1,10 +1,10 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Outfit } from 'next/font/google';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ColorTransition } from 'party/app/color-transition';
-import { SvgCards } from 'party/app/games/big-kings-cup/svg-cards';
+import { ColorTransition } from 'party/_components/color-transition';
+import { SvgCards } from 'party/_components/svg-cards';
 import { classNames } from 'party/utils/class-names';
 import { useRandomPool } from 'party/utils/use-random-pool';
 import contentJson from './content.json';
@@ -16,7 +16,16 @@ export default function Home() {
   const [getNextCard] = useRandomPool(contentJson.cards);
 
   const [card, setCard] = useState<string | undefined>();
-  const onClickNext = useCallback(() => setCard(getNextCard()), [getNextCard]);
+  const whooshAudioRef = useRef<HTMLAudioElement>(null);
+  const onClickNext = useCallback(() => {
+    setCard(getNextCard());
+
+    if (whooshAudioRef.current) {
+      const soundClone = whooshAudioRef.current.cloneNode() as HTMLAudioElement;
+      soundClone.currentTime = 0.0;
+      soundClone.play();
+    }
+  }, [getNextCard]);
 
   useEffect(() => {
     setCard(getNextCard());
@@ -31,6 +40,7 @@ export default function Home() {
 
   return (
     <div className="text-left w-full grow flex items-center">
+      <audio src="/sounds/whoosh.mp3" autoPlay={false} ref={whooshAudioRef} />
       <ColorTransition targetColor="#180621" />
       <div className="hidden">
         <SvgCards />
@@ -50,7 +60,7 @@ export default function Home() {
                 animate={{ translateX: 0, rotateZ: '0deg', opacity: 1.0 }}
                 exit={{ translateX: '200%', rotateZ: '45deg', opacity: 0.0 }}
               >
-                <svg width="100%" height="100%">
+                <svg width="100%" height="100%" viewBox="0 0 225 314">
                   <use href={`#${card}`} />
                 </svg>
               </motion.div>

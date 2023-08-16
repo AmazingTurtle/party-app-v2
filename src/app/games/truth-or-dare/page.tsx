@@ -1,9 +1,9 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { Outfit } from 'next/font/google';
 import { AnimatePresence, motion, useTime } from 'framer-motion';
-import { ColorTransition } from 'party/app/color-transition';
+import { ColorTransition } from 'party/_components/color-transition';
 import { classNames } from 'party/utils/class-names';
 import { useRandomPool } from 'party/utils/use-random-pool';
 import contentJson from './content.json';
@@ -25,6 +25,9 @@ export default function Home() {
   const [getNextTruth] = useRandomPool(contentJson.truth);
   const [getNextDare] = useRandomPool(contentJson.dare);
 
+  const whoosh1AudioRef = useRef<HTMLAudioElement>(null);
+  const whoosh2AudioRef = useRef<HTMLAudioElement>(null);
+
   const [prompt, setPrompt] = useState<string | undefined>('');
 
   const onClickNextTruth = useCallback(() => {
@@ -32,6 +35,13 @@ export default function Home() {
     setLastChange(time.get());
     setPrompt(getNextTruth());
     setPromptType('truth');
+
+    if (whoosh1AudioRef.current) {
+      const clonedSound =
+        whoosh1AudioRef.current.cloneNode() as HTMLAudioElement;
+      clonedSound.currentTime = 0.0;
+      clonedSound.play();
+    }
   }, [getNextTruth, lastChange, time]);
 
   const onClickNextDare = useCallback(() => {
@@ -39,6 +49,13 @@ export default function Home() {
     setLastChange(time.get());
     setPrompt(getNextDare());
     setPromptType('dare');
+
+    if (whoosh2AudioRef.current) {
+      const clonedSound =
+        whoosh2AudioRef.current.cloneNode() as HTMLAudioElement;
+      clonedSound.currentTime = 0.0;
+      clonedSound.play();
+    }
   }, [getNextDare, lastChange, time]);
 
   const targetColor =
@@ -50,6 +67,8 @@ export default function Home() {
 
   return (
     <div className="text-left w-full grow flex items-center">
+      <audio src="/sounds/whoosh.mp3" autoPlay={false} ref={whoosh1AudioRef} />
+      <audio src="/sounds/whoosh2.mp3" autoPlay={false} ref={whoosh2AudioRef} />
       <ColorTransition targetColor={targetColor} />
       <div className="w-full">
         <div className="relative h-20">

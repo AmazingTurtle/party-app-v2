@@ -1,6 +1,6 @@
 'use client';
 
-import { ColorTransition } from 'party/app/color-transition';
+import { ColorTransition } from 'party/_components/color-transition';
 
 export default function Home({ params }: { params: { 'game-name': string } }) {
   return (
