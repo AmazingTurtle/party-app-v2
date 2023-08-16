@@ -42,7 +42,7 @@ export default function Home() {
   const onClickNext = useCallback(() => {
     if (lastChange + transitionTime > time.get()) return;
     setLastChange(time.get());
-    setPrompt(getNextItem().question);
+    setPrompt(getNextItem());
     startSoundEffect();
 
     gameState.isRunning = true;
@@ -80,8 +80,7 @@ export default function Home() {
           bingAudioRef.current.currentTime = 0.1;
           bingAudioRef.current.play();
         }
-      } catch (error) {
-        console.log('boop');
+      } catch {
         // most likely permission issues on mobile devices
       }
     }
