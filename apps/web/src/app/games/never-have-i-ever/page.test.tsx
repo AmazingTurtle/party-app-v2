@@ -1,0 +1,44 @@
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import type * as FramerMotion from 'framer-motion';
+import { describe, expect, it, vi } from 'vitest';
+import contentJson from './content.json';
+import NeverHaveIEverPage from './page';
+
+vi.mock('@/_components/color-transition', () => ({
+  ColorTransition: () => null,
+}));
+
+vi.mock('framer-motion', async (importOriginal) => {
+  const actual = await importOriginal<typeof FramerMotion>();
+
+  return {
+    ...actual,
+    useTime: () => ({
+      get: () => 1_000,
+    }),
+  };
+});
+
+describe('Never Have I Ever', () => {
+  it('shows a different prompt when the player continues', async () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+    const user = userEvent.setup();
+    const firstQuestion = contentJson.questions[0];
+    const secondQuestion = contentJson.questions[1];
+
+    if (firstQuestion === undefined || secondQuestion === undefined) {
+      throw new Error('The game requires at least two prompts.');
+    }
+
+    render(<NeverHaveIEverPage />);
+
+    expect(await screen.findByText(firstQuestion.question)).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Weiter' }));
+
+    expect(
+      await screen.findByText(secondQuestion.question),
+    ).toBeInTheDocument();
+  });
+});

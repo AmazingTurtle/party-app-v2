@@ -1,40 +1,45 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Dependencies
+node_modules/
+.pnp.*
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+# Yarn
+.yarn/*
+!.yarn/releases/
 
-# testing
-/coverage
+# Next.js and Turborepo
+.next/
+.turbo/
+out/
 
-# next.js
-/.next/
-/out/
+# Tests
+coverage/
+playwright-report/
+test-results/
 
-# production
-/build
+# Generated service workers
+apps/web/public/sw.js
+apps/web/public/sw.js.map
+apps/web/public/swe-worker-development.js
+apps/web/public/workbox-*
 
-# misc
+# Local environment
+.env*.local
+
+# Editors and operating systems
 .DS_Store
-*.pem
+.idea/
 
-# debug
+# Debug output
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
-.env*.local
+# Deployment
+.vercel/
 
-# vercel
-.vercel
-
-# typescript
+# TypeScript
 *.tsbuildinfo
 next-env.d.ts
 
-public/sw.js
-public/sw.js.map
-public/swe-worker-development.js
-public/workbox-*
+# Secrets
+*.pem

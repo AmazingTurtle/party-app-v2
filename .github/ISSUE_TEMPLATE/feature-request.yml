@@ -1,0 +1,32 @@
+name: Feature request
+description: Propose a focused game, content, or tooling improvement
+title: "Feature: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What player or contributor problem should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Describe the smallest useful version.
+    validations:
+      required: true
+  - type: textarea
+    id: gameplay
+    attributes:
+      label: Gameplay impact
+      description: Explain effects on rules, pacing, content, or offline behavior. Write "None" if not applicable.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What simpler options or existing behavior did you consider?

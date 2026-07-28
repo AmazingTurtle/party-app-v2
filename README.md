@@ -1,34 +1,59 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# The Party App
 
-## Getting Started
+German-language party games in an installable, offline-capable Next.js
+application.
 
-First, run the development server:
+## Requirements
+
+- Node.js 22.22.2 or newer
+- Corepack
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+corepack enable
+yarn install --immutable
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Install the Playwright browser once before running browser tests:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+yarn workspace @party-app/web playwright install chromium
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Workspace
 
-## Learn More
+```text
+apps/web                 Next.js app, game content, tests, and PWA worker
+packages/eslint-config   Shared flat ESLint and formatting policy
+packages/tsconfig        Shared strict TypeScript policy
+docs                     Current specifications and milestone history
+```
 
-To learn more about Next.js, take a look at the following resources:
+Product code stays in `apps/web` until another real consumer justifies a new
+package.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Commands
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```bash
+yarn dev          # Start the app through Turborepo
+yarn lint         # Read-only lint and formatting check
+yarn lint:fix     # Apply supported lint and formatting fixes
+yarn typecheck    # Typecheck every workspace
+yarn test         # Run Vitest
+yarn build        # Build the production app
+yarn test:e2e     # Build and run Playwright against an owned production server
+yarn check        # Lint, typecheck, unit tests, and build
+yarn check:full   # Lint, typecheck, unit tests, build, and browser tests
+```
 
-## Deploy on Vercel
+## PWA
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Serwist is integrated through Turbopack. The service worker caches application
+assets and visited routes, and `/~offline` is used when a document was not
+previously cached. Generated service-worker files live under
+`apps/web/public` and are ignored.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Documentation
+
+Start at [docs/README.md](docs/README.md). Significant work uses the milestone
+contract under `docs/milestones`; current product and architecture documents
+take precedence over completed milestone history.

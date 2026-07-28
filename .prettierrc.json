@@ -1,0 +1,22 @@
+{
+  "singleQuote": true,
+  "endOfLine": "lf",
+  "trailingComma": "all",
+  "importOrder": [
+    "^react$",
+    "^next$",
+    "^next/",
+    "^next(.*?)/",
+    "<THIRD_PARTY_MODULES>",
+    "^@party-app/(.*)$",
+    "^@/(.*)$",
+    "^[./]",
+    "\\.json$",
+    "\\.css$"
+  ],
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ],
+  "tailwindStylesheet": "./apps/web/src/app/globals.css"
+}
