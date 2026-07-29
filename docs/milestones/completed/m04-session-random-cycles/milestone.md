@@ -1,6 +1,9 @@
 # Milestone M04: Session-Persistent Random Cycles
 
-Status: Active
+Status: Completed on 2026-07-29
+
+> Historical record. Current product and architecture documents plus the
+> implementation own the current behavior.
 
 ## Goal
 
@@ -45,30 +48,27 @@ browser-tab session, then automatically reshuffle each exhausted pool.
 
 ## Gate A: Random-Cycle Domain
 
-- [ ] Every key is drawn once before rollover.
-- [ ] Exhausted pools reshuffle and avoid an immediate boundary repeat.
-- [ ] Persisted history reconciles with current catalog entries.
+- Every key is drawn once before rollover.
+- Exhausted pools reshuffle and avoid an immediate boundary repeat.
+- Persisted history reconciles with current catalog entries.
 
 ## Gate B: Browser Persistence
 
-- [ ] Valid session state resumes after reload or remount.
-- [ ] Invalid or unavailable storage degrades to a fresh in-memory cycle.
-- [ ] Initial automatic draws happen only after browser hydration.
+- Valid session state resumes after reload or remount.
+- Invalid or unavailable storage degrades to a fresh in-memory cycle.
+- Initial automatic draws happen only after browser hydration.
 
 ## Gate C: Game and Content Integration
 
-- [ ] Every playable randomized game uses its own persisted pool.
-- [ ] Later case-insensitive exact duplicates are removed from prompt catalogs.
-- [ ] Catalog tests prevent duplicate canonical keys from returning.
+- Every playable randomized game uses its own persisted pool.
+- Later case-insensitive exact duplicates are removed from prompt catalogs.
+- Catalog tests prevent duplicate canonical keys from returning.
 
-## Testing and Validation
+## Validation Record
 
-- [ ] Focused random-pool and game component tests.
-- [ ] `yarn lint`
-- [ ] `yarn typecheck`
-- [ ] `yarn test`
-- [ ] `yarn build`
-- [ ] `yarn test:e2e`
+No validation command was run during milestone closure. The implementation was
+already committed and pushed as `a41e117`. No focused-test, lint, typecheck,
+test, build, or browser-test result is claimed here.
 
 ## Assumptions
 
@@ -78,4 +78,10 @@ browser-tab session, then automatically reshuffle each exhausted pool.
 
 ## Outcome
 
-Pending.
+The implementation introduced a pure keyed random-cycle domain, versioned
+tab-scoped persistence, hydration-aware React integration, independent game
+and prompt-category pools, and duplicate-catalog regression coverage. The
+current product and architecture documents were updated.
+
+The milestone closed at the operator's direction without rerunning its
+validation commands.

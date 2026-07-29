@@ -1,6 +1,9 @@
 # Milestone M03: Full Product Visual Redesign
 
-Status: Active
+Status: Completed on 2026-07-29
+
+> Historical record. Current product and architecture documents plus the
+> implementation own the current behavior.
 
 ## Goal
 
@@ -56,41 +59,36 @@ responsive visual system that works equally well in light and dark themes.
 
 ## Gate A: Visual Foundation
 
-- [ ] Semantic light and dark tokens replace one-off shell colors.
-- [ ] Shared header, footer, navigation, and theme popover use one visual system.
-- [ ] Route tint animation remains restrained and reduced-motion safe.
+- Semantic light and dark tokens replace one-off shell colors.
+- Shared header, footer, navigation, and theme popover use one visual system.
+- Route tint animation remains restrained and reduced-motion safe.
 
 ## Gate B: Launcher
 
-- [ ] The wordmark appears once with a compact “Wähle ein Spiel” hierarchy.
-- [ ] Five game links use a deliberate responsive grid.
-- [ ] Cards use typed identities, Lucide icons, explicit muted text, and visible
+- The wordmark appears once with a compact “Wähle ein Spiel” hierarchy.
+- Five game links use a deliberate responsive grid.
+- Cards use typed identities, Lucide icons, explicit muted text, and visible
       hover, focus, pending, and active states.
 
 ## Gate C: Product Routes
 
-- [ ] Playable games use a neutral shared stage with route-owned accents.
-- [ ] Legal, offline, unknown-game, and Gigalo routes match the shared shell.
-- [ ] Existing content, interaction, metadata, asset loading, and offline
+- Playable games use a neutral shared stage with route-owned accents.
+- Legal, offline, unknown-game, and Gigalo routes match the shared shell.
+- Existing content, interaction, metadata, asset loading, and offline
       behavior remain intact.
 
 ## Gate D: Documentation and Regression Coverage
 
-- [ ] Product and architecture documents own the durable appearance rules.
-- [ ] Component and browser tests cover the changed accessible behavior.
-- [ ] Deterministic visual baselines cover representative light, dark, desktop,
+- Product and architecture documents own the durable appearance rules.
+- Component and browser tests cover the changed accessible behavior.
+- Deterministic visual baselines cover representative light, dark, desktop,
       and mobile surfaces.
 
-## Testing and Validation
+## Validation Record
 
-- [ ] `yarn lint`
-- [ ] `yarn typecheck`
-- [ ] `yarn test`
-- [ ] `yarn build`
-- [ ] `yarn test:e2e`
-- [ ] Inspect the final diff for stale appearance classes, generated service
-      worker output, and accidental content changes.
-- [ ] Recheck implementation LOC and direct-source folder density.
+No validation command was run during milestone closure. The implementation was
+already committed and pushed as `a41e117`. No lint, typecheck, test, build,
+browser-test, final-diff, LOC, or folder-density result is claimed here.
 
 ## Assumptions
 
@@ -101,5 +99,10 @@ responsive visual system that works equally well in light and dark themes.
 
 ## Outcome
 
-Fill when closing. Record deviations, unverified checks, and current documents
-updated.
+The implementation introduced the shared shell, theme control, typed game
+appearance catalog, launcher, shared game stage, route tint, responsive styles,
+and visual browser coverage. The current product and architecture documents
+were updated.
+
+The milestone closed at the operator's direction without rerunning its
+validation commands or manually completing its final inspection items.

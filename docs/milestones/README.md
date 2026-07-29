@@ -18,10 +18,11 @@ move the directory to `completed`, and update this registry.
 
 ## Active
 
-- [M03 Full Product Visual Redesign](active/m03-full-product-visual-redesign/milestone.md)
-- [M04 Session-Persistent Random Cycles](active/m04-session-random-cycles/milestone.md)
+No active milestone.
 
 ## Completed
 
+- [M04 Session-Persistent Random Cycles](completed/m04-session-random-cycles/milestone.md)
+- [M03 Full Product Visual Redesign](completed/m03-full-product-visual-redesign/milestone.md)
 - [M02 Game and Codebase Hardening](completed/m02-game-codebase-hardening/milestone.md)
 - [M01 Repository Modernization](completed/m01-repository-modernization/milestone.md)
