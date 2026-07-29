@@ -2,11 +2,12 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type * as FramerMotion from 'framer-motion';
 import { describe, expect, it, vi } from 'vitest';
+import { getCaseInsensitiveContentKey } from '@/games/random-pool/random-pool';
 import contentJson from './content.json';
 import NeverHaveIEverPage from './page';
 
-vi.mock('@/_components/color-transition', () => ({
-  ColorTransition: () => null,
+vi.mock('@/_components/route-tint/route-tint', () => ({
+  RouteTint: () => null,
 }));
 
 vi.mock('framer-motion', async (importOriginal) => {
@@ -21,6 +22,14 @@ vi.mock('framer-motion', async (importOriginal) => {
 });
 
 describe('Never Have I Ever', () => {
+  it('has no case-insensitive exact prompt duplicates', () => {
+    const promptKeys = contentJson.questions.map(({ question }) =>
+      getCaseInsensitiveContentKey(question),
+    );
+
+    expect(new Set(promptKeys).size).toBe(promptKeys.length);
+  });
+
   it('shows a different prompt when the player continues', async () => {
     vi.spyOn(Math, 'random').mockReturnValue(0);
     const user = userEvent.setup();

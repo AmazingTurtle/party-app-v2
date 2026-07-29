@@ -18,6 +18,18 @@ Next.js renders the app through the App Router. Browser interactions are client
 components; layouts, metadata, manifests, static fallback pages, and route
 coordination remain server-owned where possible.
 
+The app shell uses `next-themes` to apply a light or dark root class before
+hydration. The browser stores only the selected System, light, or dark
+preference. System mode follows live `prefers-color-scheme` changes. Route
+background transitions animate a dedicated low-opacity tint over the neutral
+canvas rather than replacing it.
+
+One app-local typed game catalog owns launcher routes, display names,
+descriptions, Lucide icons, and appearance identities. The shared site shell
+owns the single wordmark, footer, and floating appearance control. Game routes
+compose a shared stage while retaining route-local interaction state and prompt
+catalogs.
+
 Serwist integrates with Turbopack. The typed service-worker source is compiled
 into ignored output, and the `/serwist/[path]` handler serves the generated
 worker. `/~offline` is the document fallback. The install manifest contains the
@@ -27,13 +39,18 @@ time. It defers on Data Saver, `slow-2g`, and `2g` connections.
 
 ## State and Content
 
-Games own transient state locally. There is no backend, database, account,
-shared store, or persisted game session.
+Games own visible interaction state locally. There is no backend, database,
+account, shared store, or restorable game session. The only persisted game
+state is versioned random-pool draw history in tab-scoped `sessionStorage`.
+Stored values remain untrusted until validated. Missing, malformed, or
+unavailable storage starts a fresh in-memory cycle.
 
 Prompt content is imported from route-local JSON. The standard 52-card deck,
-asset URLs, and German card labels have one typed app-local owner. Random pools
-copy the source catalog, return every item once per cycle, avoid a repeat at the
-cycle boundary, and never mutate imported content.
+asset URLs, and German card labels have one typed app-local owner. A pure
+game-domain random pool copies the source catalog, keys entries explicitly,
+shuffles unseen entries, returns every key once per cycle, avoids a repeat at
+the cycle boundary, and never mutates imported content. Separate browser
+adapters persist each prompt category and card game independently.
 
 ## Verification
 

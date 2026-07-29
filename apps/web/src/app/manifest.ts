@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: 'Eine Party App für die Party People',
     start_url: '/',
     display: 'standalone',
-    background_color: '#000000',
-    theme_color: '#0A1012',
+    background_color: '#0b1118',
+    theme_color: '#0b1118',
     orientation: 'portrait',
     icons: [
       {

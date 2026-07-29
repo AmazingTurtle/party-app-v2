@@ -3,8 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import BusDriverPage from './page';
 
-vi.mock('@/_components/color-transition', () => ({
-  ColorTransition: () => null,
+vi.mock('@/_components/route-tint/route-tint', () => ({
+  RouteTint: () => null,
 }));
 
 describe('Bus Fahrer', () => {

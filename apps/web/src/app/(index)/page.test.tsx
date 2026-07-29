@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import HomePage from './page';
 
-vi.mock('@/_components/color-transition', () => ({
-  ColorTransition: () => null,
+vi.mock('@/_components/route-tint/route-tint', () => ({
+  RouteTint: () => null,
 }));
 
 describe('home page', () => {
@@ -11,7 +11,7 @@ describe('home page', () => {
     render(<HomePage />);
 
     expect(
-      screen.getByRole('img', { name: 'Party App Logo' }),
+      screen.getByRole('heading', { name: 'Wähle ein Spiel' }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole('link', { name: /Ich hab noch nie/i }),

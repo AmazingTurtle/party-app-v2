@@ -2,22 +2,26 @@
 
 import { useEffect } from 'react';
 import { animate, useReducedMotion } from 'framer-motion';
+import { useTheme } from 'next-themes';
 
-export interface ColorTransitionProps {
-  targetColor: string;
+export interface RouteTintProps {
+  darkColor: string;
+  lightColor: string;
 }
 
-export function ColorTransition({ targetColor }: ColorTransitionProps) {
+export function RouteTint({ darkColor, lightColor }: RouteTintProps) {
   const prefersReducedMotion = useReducedMotion();
+  const { resolvedTheme } = useTheme();
+  const targetColor = resolvedTheme === 'dark' ? darkColor : lightColor;
 
   useEffect(() => {
     const root = document.documentElement;
     const currentColor = getComputedStyle(root)
-      .getPropertyValue('--background-start-hex')
+      .getPropertyValue('--route-tint')
       .trim();
 
     if (prefersReducedMotion) {
-      root.style.setProperty('--background-start-hex', targetColor);
+      root.style.setProperty('--route-tint', targetColor);
       return;
     }
 
@@ -25,7 +29,7 @@ export function ColorTransition({ targetColor }: ColorTransitionProps) {
       duration: 0.25,
       ease: 'easeInOut',
       onUpdate(value) {
-        root.style.setProperty('--background-start-hex', value);
+        root.style.setProperty('--route-tint', value);
       },
     });
 

@@ -1,0 +1,84 @@
+.theme-floater {
+  position: fixed;
+  z-index: 50;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  display: inline-flex;
+  width: 3rem;
+  height: 3rem;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 0.875rem;
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+  color: var(--text);
+  transition:
+    border-color 140ms ease,
+    transform 140ms ease;
+}
+
+.theme-floater:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+}
+
+.theme-floater:active {
+  transform: translateY(0);
+}
+
+.theme-floater svg {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+.theme-popover {
+  position: fixed;
+  inset: auto max(1rem, env(safe-area-inset-right))
+    calc(max(1rem, env(safe-area-inset-bottom)) + 3.75rem) auto;
+  width: 12rem;
+  margin: 0;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  box-shadow: var(--shadow-md);
+  color: var(--text);
+  backdrop-filter: blur(16px);
+}
+
+.theme-popover__options {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.theme-option {
+  display: grid;
+  min-height: 2.75rem;
+  padding: 0.625rem 0.75rem;
+  cursor: pointer;
+  grid-template-columns: 1.125rem 1fr 1.125rem;
+  align-items: center;
+  gap: 0.625rem;
+  border-radius: 0.625rem;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 650;
+  text-align: left;
+}
+
+.theme-option:hover,
+.theme-option--active {
+  background: var(--surface-muted);
+  color: var(--text);
+}
+
+.theme-option svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.theme-option__check {
+  color: var(--focus);
+}

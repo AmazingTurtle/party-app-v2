@@ -22,12 +22,33 @@ party and drinking games. It is designed for quick use on a shared phone.
 Gigalo is unavailable and therefore hidden from the home page. Its direct route
 remains available as an explanatory page.
 
+## Appearance
+
+The shared app shell offers System, light, and dark themes. System is the
+default and follows browser or operating-system color changes. An explicit
+choice persists in local browser storage.
+
+The shell uses a neutral canvas and surface hierarchy in both themes. Each game
+has one accent identity used by its launcher icon, controls, progress, borders,
+and a restrained route tint. The launcher presents the five available games in
+a deliberate responsive grid. Shared navigation, legal links, and appearance
+controls remain available on every route without covering game controls.
+
 ## Content Ownership
 
 Route-local `content.json` files own game prompts and explanations. The shared
 standard playing-card domain owns the deck, card asset paths, and labels.
-Technical work must not silently rewrite, deduplicate, normalize, or moderate
-published content.
+Prompt collections must not contain case-insensitive exact duplicates; the
+first occurrence owns the retained wording. Other technical work must not
+silently rewrite, deduplicate, normalize, or moderate published content.
+
+## Random Content
+
+Every playable prompt pool and card deck returns each item once before
+reshuffling. Draw history survives navigation and reloads within the current
+browser-tab session. Each game and each Wahrheit/Pflicht category has an
+independent cycle. Visible prompts, card rounds, timers, and animations do not
+resume after reload.
 
 ## PWA Behavior
 

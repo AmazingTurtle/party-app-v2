@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import GigaloPage from './page';
 
-vi.mock('@/_components/color-transition', () => ({
-  ColorTransition: () => null,
+vi.mock('@/_components/route-tint/route-tint', () => ({
+  RouteTint: () => null,
 }));
 
 describe('Gigalo', () => {

@@ -41,7 +41,7 @@ export function FlippableCard({
             animate={{ rotateY: '0deg' }}
             exit={{ rotateY: '180deg' }}
           >
-            <div className="flex h-full w-full items-center justify-center rounded-lg bg-[#121004]/20">
+            <div className="flex h-full w-full items-center justify-center rounded-lg bg-[#3b340d]/20">
               {children}
             </div>
           </motion.div>

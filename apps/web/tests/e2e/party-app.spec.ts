@@ -15,6 +15,64 @@ test('navigates from the home page into a playable game', async ({ page }) => {
     .not.toBe(promptBefore);
 });
 
+test('keeps prompt history across reloads and route navigation', async ({
+  page,
+}) => {
+  await page.goto('/games/never-have-i-ever');
+  const nextButton = page.getByRole('button', { name: 'Weiter' });
+  await expect(nextButton).toBeEnabled();
+  const firstPrompt = await page.locator('main').textContent();
+
+  await page.reload();
+  await expect(nextButton).toBeEnabled();
+  const secondPrompt = await page.locator('main').textContent();
+  expect(secondPrompt).not.toBe(firstPrompt);
+
+  await page.goto('/');
+  await page.getByRole('link', { name: /Ich hab noch nie/i }).click();
+  await expect(nextButton).toBeEnabled();
+  const thirdPrompt = await page.locator('main').textContent();
+
+  expect(thirdPrompt).not.toBe(firstPrompt);
+  expect(thirdPrompt).not.toBe(secondPrompt);
+});
+
+test('persists explicit themes and follows System color changes', async ({
+  page,
+}) => {
+  await page.emulateMedia({ colorScheme: 'light' });
+  await page.goto('/');
+
+  const root = page.locator('html');
+  const themeButton = page.getByRole('button', {
+    name: 'Farbschema ändern',
+  });
+  await expect(root).toHaveClass('light');
+  await themeButton.click();
+  await expect(page.getByRole('button', { name: 'System' })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+
+  await page.getByRole('button', { name: 'Dunkel' }).click();
+  await expect(root).toHaveClass('dark');
+
+  await page.reload();
+  await expect(root).toHaveClass('dark');
+
+  await themeButton.click();
+  await page.getByRole('button', { name: 'Hell' }).click();
+  await expect(root).toHaveClass('light');
+
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await themeButton.click();
+  await page.getByRole('button', { name: 'System' }).click();
+  await expect(root).toHaveClass('dark');
+
+  await page.emulateMedia({ colorScheme: 'light' });
+  await expect(root).toHaveClass('light');
+});
+
 test('renders legal content and unknown-game fallback routes', async ({
   page,
 }) => {
@@ -70,6 +128,50 @@ test('keeps the five-second game and its start control inside the viewport', asy
       () => document.documentElement.scrollHeight <= window.innerHeight + 1,
     ),
   ).toBe(true);
+});
+
+test('keeps the Kings Cup card and long rule inside a mobile stage', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Math.random = () => 0;
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/games/big-kings-cup');
+
+  const firstCard = page.getByRole('button', {
+    name: 'Nächste Karte ziehen. Aktuelle Karte: Ass Kreuz',
+  });
+  await expect(firstCard).toBeVisible();
+  const firstCardTop = (await firstCard.boundingBox())?.y;
+  await firstCard.click();
+
+  const kingCard = page.getByRole('button', {
+    name: 'Nächste Karte ziehen. Aktuelle Karte: König Pik',
+  });
+  await expect(kingCard).toBeVisible();
+  await expect(page.getByRole('heading', { name: "King's Cup" })).toBeVisible();
+  await expect(page.getByText('Karte antippen')).toBeVisible();
+  const kingCardTop = (await kingCard.boundingBox())?.y;
+  expect(firstCardTop).toBeDefined();
+  expect(kingCardTop).toBeCloseTo(firstCardTop ?? 0, 0);
+
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollHeight <= window.innerHeight + 1,
+    ),
+  ).toBe(true);
+
+  const ruleText = page.locator('.kings-rule p');
+  expect(
+    await ruleText.evaluate(
+      (element) => element.scrollHeight > element.clientHeight,
+    ),
+  ).toBe(true);
+
+  await kingCard.focus();
+  await page.keyboard.press('Enter');
+  await expect(kingCard).toHaveCount(0);
 });
 
 test('publishes route-specific titles, canonicals, and no-index metadata', async ({

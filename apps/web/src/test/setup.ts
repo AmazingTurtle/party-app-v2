@@ -13,6 +13,7 @@ vi.mock('next/font/google', () => ({
 
 afterEach(() => {
   cleanup();
+  window.sessionStorage.clear();
   vi.restoreAllMocks();
 });
 

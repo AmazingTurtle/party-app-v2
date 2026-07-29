@@ -3,9 +3,11 @@
 import { useCallback, useRef, useState } from 'react';
 import { Outfit } from 'next/font/google';
 import { AnimatePresence, motion, useTime } from 'framer-motion';
-import { ColorTransition } from '@/_components/color-transition';
+import { GameStage } from '@/_components/game-stage/game-stage';
+import { RouteTint } from '@/_components/route-tint/route-tint';
+import { getCaseInsensitiveContentKey } from '@/games/random-pool/random-pool';
+import { useSessionRandomPool } from '@/games/random-pool/use-session-random-pool';
 import { playAudio } from '@/lib/audio';
-import { useRandomPool } from '@/utils/use-random-pool';
 import contentJson from './content.json';
 
 const outfit = Outfit({ subsets: ['latin'] });
@@ -24,8 +26,14 @@ export default function TruthOrDarePage() {
   const time = useTime();
   const transitionTime = 500;
   const [lastChange, setLastChange] = useState(-transitionTime);
-  const getNextTruth = useRandomPool(contentJson.truth);
-  const getNextDare = useRandomPool(contentJson.dare);
+  const getNextTruth = useSessionRandomPool(contentJson.truth, {
+    getKey: getCaseInsensitiveContentKey,
+    id: 'truth-or-dare/truth',
+  });
+  const getNextDare = useSessionRandomPool(contentJson.dare, {
+    getKey: getCaseInsensitiveContentKey,
+    id: 'truth-or-dare/dare',
+  });
 
   const whoosh1AudioRef = useRef<HTMLAudioElement>(null);
   const whoosh2AudioRef = useRef<HTMLAudioElement>(null);
@@ -33,7 +41,13 @@ export default function TruthOrDarePage() {
   const [prompt, setPrompt] = useState<Prompt | undefined>(undefined);
 
   const onClickNextTruth = useCallback(() => {
-    if (lastChange + transitionTime > time.get()) return;
+    if (
+      getNextTruth === undefined ||
+      lastChange + transitionTime > time.get()
+    ) {
+      return;
+    }
+
     setLastChange(time.get());
     setPrompt({ type: 'truth', text: getNextTruth() });
 
@@ -41,75 +55,88 @@ export default function TruthOrDarePage() {
   }, [getNextTruth, lastChange, time]);
 
   const onClickNextDare = useCallback(() => {
-    if (lastChange + transitionTime > time.get()) return;
+    if (getNextDare === undefined || lastChange + transitionTime > time.get()) {
+      return;
+    }
+
     setLastChange(time.get());
     setPrompt({ type: 'dare', text: getNextDare() });
 
     playAudio(whoosh2AudioRef.current);
   }, [getNextDare, lastChange, time]);
 
-  const targetColor =
+  const darkColor =
     prompt?.type === 'truth'
-      ? '#101F4C'
+      ? '#354a8c'
       : prompt?.type === 'dare'
-        ? '#450C24'
-        : '#080c27';
+        ? '#71354f'
+        : '#303b69';
+  const lightColor =
+    prompt?.type === 'truth'
+      ? '#cdd8fa'
+      : prompt?.type === 'dare'
+        ? '#f1cfdd'
+        : '#dce2f5';
 
   return (
-    <div className="flex w-full grow items-center text-left">
-      <audio src="/sounds/whoosh.mp3" ref={whoosh1AudioRef} />
-      <audio src="/sounds/whoosh2.mp3" ref={whoosh2AudioRef} />
-      <ColorTransition targetColor={targetColor} />
-      <div className="w-full">
-        <div className="relative h-20">
-          {prompt && (
+    <>
+      <RouteTint darkColor={darkColor} lightColor={lightColor} />
+      <GameStage gameId="truth-or-dare">
+        <audio src="/sounds/whoosh.mp3" ref={whoosh1AudioRef} />
+        <audio src="/sounds/whoosh2.mp3" ref={whoosh2AudioRef} />
+        <div className="w-full max-w-2xl">
+          <div className="relative h-20">
+            {prompt && (
+              <AnimatePresence>
+                <motion.div
+                  key={prompt.type}
+                  initial={{ translateX: '-50%', opacity: 0 }}
+                  animate={{ translateX: 0, opacity: 1 }}
+                  exit={{ translateX: '50%', opacity: 0 }}
+                  className={`absolute inset-0 text-center text-5xl ${outfit.className}`}
+                >
+                  {promptTranslation[prompt.type]}
+                </motion.div>
+              </AnimatePresence>
+            )}
+          </div>
+          <div className="relative mb-8 min-h-50 md:min-h-40">
             <AnimatePresence>
               <motion.div
-                key={prompt.type}
+                key={prompt?.text ?? 'choice'}
                 initial={{ translateX: '-50%', opacity: 0 }}
                 animate={{ translateX: 0, opacity: 1 }}
                 exit={{ translateX: '50%', opacity: 0 }}
-                className={`absolute top-0 right-0 bottom-0 left-0 max-w-xl text-center text-5xl ${outfit.className}`}
               >
-                {promptTranslation[prompt.type]}
+                <div
+                  className={`absolute inset-0 text-center text-xl ${outfit.className}`}
+                >
+                  {prompt?.text ?? 'Wahrheit oder Pflicht?'}
+                </div>
               </motion.div>
             </AnimatePresence>
-          )}
-        </div>
-        <div className="relative mb-8 min-h-[200px] md:min-h-[160px]">
-          <AnimatePresence>
-            <motion.div
-              key={prompt?.text ?? 'choice'}
-              initial={{ translateX: '-50%', opacity: 0 }}
-              animate={{ translateX: 0, opacity: 1 }}
-              exit={{ translateX: '50%', opacity: 0 }}
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6">
+            <button
+              type="button"
+              className="button button--truth"
+              disabled={getNextTruth === undefined}
+              onClick={onClickNextTruth}
             >
-              <div
-                className={`absolute top-0 right-0 bottom-0 left-0 max-w-xl text-center text-xl ${outfit.className}`}
-              >
-                {prompt?.text ?? 'Wahrheit oder Pflicht?'}
-              </div>
-            </motion.div>
-          </AnimatePresence>
+              Wahrheit
+            </button>
+            <span className="text-sm opacity-60">oder</span>
+            <button
+              type="button"
+              className="button button--dare"
+              disabled={getNextDare === undefined}
+              onClick={onClickNextDare}
+            >
+              Pflicht
+            </button>
+          </div>
         </div>
-        <div className="flex items-center justify-center space-x-6">
-          <button
-            type="button"
-            className="button !bg-blue-900/50"
-            onClick={onClickNextTruth}
-          >
-            Wahrheit
-          </button>
-          <span>oder</span>
-          <button
-            type="button"
-            className="button !bg-rose-900/50"
-            onClick={onClickNextDare}
-          >
-            Pflicht
-          </button>
-        </div>
-      </div>
-    </div>
+      </GameStage>
+    </>
   );
 }

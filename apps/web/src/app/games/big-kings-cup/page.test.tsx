@@ -3,25 +3,32 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import BigKingsCupGame from './big-kings-cup-game';
 
-vi.mock('@/_components/color-transition', () => ({
-  ColorTransition: () => null,
+vi.mock('@/_components/route-tint/route-tint', () => ({
+  RouteTint: () => null,
 }));
 
 describe('Big Kings Cup', () => {
-  it('loads one accessible card asset at a time', async () => {
+  it('draws the next card through the accessible card control', async () => {
     vi.spyOn(Math, 'random').mockReturnValue(0);
     const user = userEvent.setup();
 
-    render(<BigKingsCupGame />);
+    const { container } = render(<BigKingsCupGame />);
 
-    const firstCard = screen.getByRole('img', { name: 'Ass Kreuz' });
-    expect(firstCard).toBeInTheDocument();
-    expect(screen.getAllByRole('img')).toHaveLength(1);
+    const firstCard = screen.getByRole('button', {
+      name: 'Nächste Karte ziehen. Aktuelle Karte: Ass Kreuz',
+    });
+    expect(container.querySelectorAll('img[src*="/cards/"]')).toHaveLength(1);
+    expect(
+      screen.queryByRole('button', { name: 'Weiter' }),
+    ).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: 'Weiter' }));
+    await user.click(firstCard);
 
     expect(
-      await screen.findByRole('img', { name: 'König Pik' }),
+      await screen.findByRole('button', {
+        name: 'Nächste Karte ziehen. Aktuelle Karte: König Pik',
+      }),
     ).toBeInTheDocument();
+    expect(container.querySelectorAll('img[src*="/cards/"]')).toHaveLength(1);
   });
 });

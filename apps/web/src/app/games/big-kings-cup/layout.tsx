@@ -1,8 +1,9 @@
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
+import { games } from '@/games/game-catalog';
 
 export const metadata: Metadata = {
-  title: 'Big Kings Cup',
+  title: games['big-kings-cup'].title,
   alternates: { canonical: '/games/big-kings-cup' },
 };
 

@@ -2,6 +2,13 @@ import type { ReactNode } from 'react';
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { AppProviders } from '@/_components/app-providers';
+import { SiteFooter } from '@/_components/shell/site-footer';
+import { SiteHeader } from '@/_components/shell/site-header';
+import '@/styles/content.css';
+import '@/styles/foundation.css';
+import '@/styles/game-stage.css';
+import '@/styles/launcher.css';
+import '@/styles/theme-control.css';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -49,14 +56,23 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0A1012',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f5f7fa' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b1118' },
+  ],
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="de">
+    <html lang="de" suppressHydrationWarning>
       <body className={`${inter.className} relative`}>
-        <AppProviders>{children}</AppProviders>
+        <AppProviders>
+          <div className="site-shell">
+            <SiteHeader />
+            {children}
+            <SiteFooter />
+          </div>
+        </AppProviders>
       </body>
     </html>
   );

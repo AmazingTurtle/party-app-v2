@@ -1149,7 +1149,9 @@ __metadata:
     eslint: "npm:9.39.5"
     framer-motion: "npm:12.43.0"
     jsdom: "npm:30.0.0"
+    lucide-react: "npm:1.27.0"
     next: "npm:16.2.12"
+    next-themes: "npm:0.4.6"
     postcss: "npm:8.5.24"
     react: "npm:19.2.8"
     react-dom: "npm:19.2.8"
@@ -4928,6 +4930,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lucide-react@npm:1.27.0":
+  version: 1.27.0
+  resolution: "lucide-react@npm:1.27.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/18b078fed81124ee3535350c8aa1718945c94fe87d7f76c815cb49bdf39ed49f6fa53fb9b3aa56653dc8ca3523ea91c76cf3040dfb8b3497b1e6356b29f3e5c9
+  languageName: node
+  linkType: hard
+
 "lz-string@npm:^1.5.0":
   version: 1.5.0
   resolution: "lz-string@npm:1.5.0"
@@ -5079,6 +5090,16 @@ __metadata:
   version: 1.4.0
   resolution: "natural-compare@npm:1.4.0"
   checksum: 10c0/f5f9a7974bfb28a91afafa254b197f0f22c684d4a1731763dda960d2c8e375b36c7d690e0d9dc8fba774c537af14a7e979129bca23d88d052fbeb9466955e447
+  languageName: node
+  linkType: hard
+
+"next-themes@npm:0.4.6":
+  version: 0.4.6
+  resolution: "next-themes@npm:0.4.6"
+  peerDependencies:
+    react: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
+  checksum: 10c0/83590c11d359ce7e4ced14f6ea9dd7a691d5ce6843fe2dc520fc27e29ae1c535118478d03e7f172609c41b1ef1b8da6b8dd2d2acd6cd79cac1abbdbd5b99f2c4
   languageName: node
   linkType: hard
 

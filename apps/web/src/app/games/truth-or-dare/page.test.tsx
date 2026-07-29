@@ -2,11 +2,12 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type * as FramerMotion from 'framer-motion';
 import { describe, expect, it, vi } from 'vitest';
+import { getCaseInsensitiveContentKey } from '@/games/random-pool/random-pool';
 import contentJson from './content.json';
 import TruthOrDarePage from './page';
 
-vi.mock('@/_components/color-transition', () => ({
-  ColorTransition: () => null,
+vi.mock('@/_components/route-tint/route-tint', () => ({
+  RouteTint: () => null,
 }));
 
 vi.mock('framer-motion', async (importOriginal) => {
@@ -21,6 +22,18 @@ vi.mock('framer-motion', async (importOriginal) => {
 });
 
 describe('Wahrheit oder Pflicht', () => {
+  it.each([
+    ['truth', contentJson.truth],
+    ['dare', contentJson.dare],
+  ] as const)(
+    'has no case-insensitive exact %s duplicates',
+    (_type, prompts) => {
+      const promptKeys = prompts.map(getCaseInsensitiveContentKey);
+
+      expect(new Set(promptKeys).size).toBe(promptKeys.length);
+    },
+  );
+
   it('starts with a meaningful choice instead of a blank prompt', () => {
     render(<TruthOrDarePage />);
 

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { ColorTransition } from '@/_components/color-transition';
+import { Construction } from 'lucide-react';
+import { RouteTint } from '@/_components/route-tint/route-tint';
 
 export interface MissingGamePageProps {
   params: Promise<{
@@ -24,13 +25,15 @@ export default async function MissingGamePage({
   const { 'game-name': gameName } = await params;
 
   return (
-    <div className="flex w-full grow items-center text-left">
-      <ColorTransition targetColor={'#0a1012'} />
-      <div className="w-full">
-        <div className="py-8 text-center text-2xl">
-          Das Spiel {gameName} gibt es leider noch nicht.
-        </div>
+    <>
+      <RouteTint darkColor="#304354" lightColor="#d8e3ec" />
+      <div className="status-panel">
+        <span className="status-panel__icon">
+          <Construction aria-hidden="true" />
+        </span>
+        <h1>Spiel nicht verfügbar</h1>
+        <p>Das Spiel {gameName} gibt es leider noch nicht.</p>
       </div>
-    </div>
+    </>
   );
 }
