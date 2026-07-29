@@ -1,6 +1,6 @@
 name: Feature request
 description: Propose a focused game, content, or tooling improvement
-title: "Feature: "
+title: 'Feature: '
 labels:
   - enhancement
 body:

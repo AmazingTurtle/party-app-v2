@@ -7,90 +7,64 @@ import { CardTemplate3 } from '@/_components/bus-driver/card-template-3';
 import { CardTemplate4 } from '@/_components/bus-driver/card-template-4';
 import { ColorTransition } from '@/_components/color-transition';
 import { FlippableCard } from '@/_components/flippable-card';
-import { SvgCards } from '@/_components/svg-cards';
-import { playAudioClone } from '@/lib/audio';
+import {
+  advanceBusDriver,
+  initialBusDriverState,
+  startBusDriverRound,
+} from '@/games/bus-driver-state';
+import { standardDeck } from '@/games/playing-cards';
+import { playAudio } from '@/lib/audio';
 import { useRandomPool } from '@/utils/use-random-pool';
-import contentJson from './content.json';
 
-type CardStack = readonly [
-  string | undefined,
-  string | undefined,
-  string | undefined,
-  string | undefined,
-];
+const cardIndexes = [0, 1, 2, 3] as const;
+const cardTemplates = [
+  <CardTemplate1 key="template-1" />,
+  <CardTemplate2 key="template-2" />,
+  <CardTemplate3 key="template-3" />,
+  <CardTemplate4 key="template-4" />,
+] as const;
 
-type FlipStates = [boolean, boolean, boolean, boolean];
-
-const emptyCardStack: CardStack = [undefined, undefined, undefined, undefined];
-
-export default function Home() {
-  const [getNextCard] = useRandomPool(contentJson.cards);
+export default function BusDriverPage() {
+  const getNextCard = useRandomPool(standardDeck);
 
   const flipCardAudioRef = useRef<HTMLAudioElement>(null);
-  const [cardStack, setCardStack] = useState<CardStack>(emptyCardStack);
-  const [flipStates, setFlipStates] = useState<FlipStates>([
-    false,
-    false,
-    false,
-    false,
-  ]);
+  const [game, setGame] = useState(initialBusDriverState);
 
-  const startGame = useCallback(() => {
-    setCardStack([getNextCard(), getNextCard(), getNextCard(), getNextCard()]);
-    setFlipStates([false, false, false, false]);
+  const handleStartGame = useCallback(() => {
+    setGame(startBusDriverRound(getNextCard));
   }, [getNextCard]);
 
-  const doFlip = useCallback(() => {
-    // slowly fill the flipStates array with true values, if the array is full, use startGame
-    const flipStatesCopy: FlipStates = [...flipStates];
-    const index = flipStatesCopy.findIndex((flipState) => !flipState);
-
-    playAudioClone(flipCardAudioRef.current, 0.3);
-
-    if (index === -1 || cardStack[0] === undefined) {
-      startGame();
-      if (index === -1) return;
-    }
-    flipStatesCopy[index] = true;
-    setFlipStates(flipStatesCopy);
-  }, [cardStack, flipStates, startGame]);
+  const handleAdvance = useCallback(() => {
+    setGame((currentGame) => advanceBusDriver(currentGame, getNextCard));
+    playAudio(flipCardAudioRef.current, 0.3);
+  }, [getNextCard]);
 
   return (
     <div className="flex w-full grow items-center text-left">
-      <audio
-        src="/sounds/flip-card.mp3"
-        autoPlay={false}
-        ref={flipCardAudioRef}
-      />
+      <audio src="/sounds/flip-card.mp3" ref={flipCardAudioRef} />
       <ColorTransition targetColor={'#121004'} />
-      <div className="hidden">
-        <SvgCards />
-      </div>
       <div>
         <button
           type="button"
           aria-label="Nächste Karte aufdecken"
           className="grid w-full cursor-pointer grid-cols-4 gap-2"
-          onClick={doFlip}
+          onClick={handleAdvance}
         >
-          <FlippableCard card={cardStack[0]} isFlipped={flipStates[0]}>
-            <CardTemplate1 />
-          </FlippableCard>
-          <FlippableCard card={cardStack[1]} isFlipped={flipStates[1]}>
-            <CardTemplate2 />
-          </FlippableCard>
-          <FlippableCard card={cardStack[2]} isFlipped={flipStates[2]}>
-            <CardTemplate3 />
-          </FlippableCard>
-          <FlippableCard card={cardStack[3]} isFlipped={flipStates[3]}>
-            <CardTemplate4 />
-          </FlippableCard>
+          {cardIndexes.map((index) => (
+            <FlippableCard
+              key={index}
+              card={game.phase === 'round' ? game.cards[index] : undefined}
+              isFlipped={game.phase === 'round' && index < game.revealedCount}
+            >
+              {cardTemplates[index]}
+            </FlippableCard>
+          ))}
         </button>
         <div className="mt-16 flex justify-center">
           <button
             type="button"
             className="button !bg-emerald-900/50"
-            onClick={startGame}
+            onClick={handleStartGame}
           >
             Neu starten
           </button>

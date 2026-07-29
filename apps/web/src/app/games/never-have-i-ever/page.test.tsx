@@ -25,10 +25,10 @@ describe('Never Have I Ever', () => {
     vi.spyOn(Math, 'random').mockReturnValue(0);
     const user = userEvent.setup();
     const firstQuestion = contentJson.questions[0];
-    const secondQuestion = contentJson.questions[1];
+    const nextQuestion = contentJson.questions.at(-1);
 
-    if (firstQuestion === undefined || secondQuestion === undefined) {
-      throw new Error('The game requires at least two prompts.');
+    if (firstQuestion === undefined || nextQuestion === undefined) {
+      throw new Error('The game requires prompts.');
     }
 
     render(<NeverHaveIEverPage />);
@@ -37,8 +37,6 @@ describe('Never Have I Ever', () => {
 
     await user.click(screen.getByRole('button', { name: 'Weiter' }));
 
-    expect(
-      await screen.findByText(secondQuestion.question),
-    ).toBeInTheDocument();
+    expect(await screen.findByText(nextQuestion.question)).toBeInTheDocument();
   });
 });

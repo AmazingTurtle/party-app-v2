@@ -3,8 +3,9 @@ import Link from 'next/link';
 import { ColorTransition } from '@/_components/color-transition';
 
 export const metadata: Metadata = {
-  title: 'Imprint | The Party App',
+  title: 'Imprint',
   description: 'Provider and contact information for The Party App.',
+  alternates: { canonical: '/imprint' },
 };
 
 export default function ImprintPage() {

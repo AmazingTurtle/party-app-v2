@@ -10,7 +10,8 @@ export function createRandomPool<T extends NonNullable<unknown>>(
     throw new Error('A random pool requires at least one item.');
   }
 
-  let remainingItems: readonly T[] = [];
+  let remainingItems: T[] = [];
+  let previousItem: T | undefined;
 
   return function nextItem() {
     if (remainingItems.length === 0) {
@@ -23,26 +24,35 @@ export function createRandomPool<T extends NonNullable<unknown>>(
       throw new Error('The random source must return a number from 0 up to 1.');
     }
 
-    const index = Math.floor(randomValue * remainingItems.length);
+    let index = Math.floor(randomValue * remainingItems.length);
+
+    if (
+      remainingItems.length > 1 &&
+      previousItem !== undefined &&
+      remainingItems[index] === previousItem
+    ) {
+      index = (index + 1) % remainingItems.length;
+    }
+
     const item = remainingItems[index];
 
     if (item === undefined) {
       throw new Error('The random pool reached an invalid state.');
     }
 
-    remainingItems = [
-      ...remainingItems.slice(0, index),
-      ...remainingItems.slice(index + 1),
-    ];
+    const lastItem = remainingItems.pop();
 
+    if (lastItem !== undefined && index < remainingItems.length) {
+      remainingItems[index] = lastItem;
+    }
+
+    previousItem = item;
     return item;
   };
 }
 
 export function useRandomPool<T extends NonNullable<unknown>>(
   poolItems: readonly T[],
-): readonly [nextItem: () => T] {
-  const nextItem = useMemo(() => createRandomPool(poolItems), [poolItems]);
-
-  return [nextItem];
+): () => T {
+  return useMemo(() => createRandomPool(poolItems), [poolItems]);
 }

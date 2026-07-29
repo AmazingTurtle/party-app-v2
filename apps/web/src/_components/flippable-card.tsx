@@ -1,8 +1,14 @@
 import { type ReactNode } from 'react';
+import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
+import {
+  getCardAssetUrl,
+  getCardLabel,
+  type CardId,
+} from '@/games/playing-cards';
 
 export interface FlippableCardProps {
-  card: string | undefined;
+  card: CardId | undefined;
   children: ReactNode;
   isFlipped: boolean;
 }
@@ -12,7 +18,7 @@ export function FlippableCard({
   isFlipped,
 }: FlippableCardProps) {
   const cardClassNames =
-    'absolute top-0 left-0 right-0 bottom-0 p-1 lg:p-2 text-black bg-white rounded-xl shadow-xl';
+    'absolute inset-0 overflow-hidden rounded-xl bg-white p-1 text-black shadow-xl lg:p-2';
 
   return (
     <div className="relative">
@@ -48,9 +54,16 @@ export function FlippableCard({
             animate={{ rotateY: '0deg' }}
             exit={{ rotateY: '180deg' }}
           >
-            <svg width="100%" height="100%" viewBox="0 0 225 314">
-              {card === undefined ? null : <use href={`#${card}`} />}
-            </svg>
+            {card === undefined ? null : (
+              <div className="relative h-full w-full overflow-hidden rounded-lg">
+                <Image
+                  src={getCardAssetUrl(card)}
+                  alt={getCardLabel(card)}
+                  fill
+                  sizes="(max-width: 1024px) 25vw, 12rem"
+                />
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

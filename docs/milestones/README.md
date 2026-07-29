@@ -18,8 +18,9 @@ move the directory to `completed`, and update this registry.
 
 ## Active
 
-No milestone is active.
+No active milestone.
 
 ## Completed
 
+- [M02 Game and Codebase Hardening](completed/m02-game-codebase-hardening/milestone.md)
 - [M01 Repository Modernization](completed/m01-repository-modernization/milestone.md)

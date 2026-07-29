@@ -1,0 +1,14 @@
+.next/
+.turbo/
+.yarn/
+coverage/
+node_modules/
+playwright-report/
+test-results/
+apps/web/public/cards/
+apps/web/src/app/games/**/content.json
+apps/web/public/sw.js
+apps/web/public/sw.js.map
+apps/web/public/swe-worker-development.js
+apps/web/public/workbox-*
+yarn.lock

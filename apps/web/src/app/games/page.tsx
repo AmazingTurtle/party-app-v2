@@ -1,3 +1,5 @@
-export default function Home() {
-  return <div>Was geht was geht was geht?</div>;
+import { redirect } from 'next/navigation';
+
+export default function GamesIndexPage() {
+  redirect('/');
 }

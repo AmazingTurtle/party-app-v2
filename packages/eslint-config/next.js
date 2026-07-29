@@ -1,10 +1,10 @@
-import { defineConfig, globalIgnores } from 'eslint/config';
 import nextCoreWebVitals from 'eslint-config-next/core-web-vitals';
 import nextTypeScript from 'eslint-config-next/typescript';
+import prettierConfig from 'eslint-config-prettier';
 import noRelativeImportPaths from 'eslint-plugin-no-relative-import-paths';
-import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import unicorn from 'eslint-plugin-unicorn';
 import unusedImports from 'eslint-plugin-unused-imports';
+import { defineConfig, globalIgnores } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 const sourceFiles = ['**/*.{js,jsx,ts,tsx,mjs,mts,cjs,cts}'];
@@ -115,5 +115,5 @@ export default defineConfig(
     ...tseslint.configs.disableTypeChecked,
     files: ['**/*.{js,mjs,cjs}'],
   },
-  prettierRecommended,
+  prettierConfig,
 );

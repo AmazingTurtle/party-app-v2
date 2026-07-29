@@ -13,19 +13,11 @@ export function playAudio(audio: HTMLAudioElement | null, startTime = 0): void {
   handlePlayback(audio.play());
 }
 
-export function playAudioClone(
-  audio: HTMLAudioElement | null,
-  startTime = 0,
-): void {
+export function stopAudio(audio: HTMLAudioElement | null): void {
   if (audio === null) {
     return;
   }
 
-  const clonedNode = audio.cloneNode();
-
-  if (!(clonedNode instanceof HTMLAudioElement)) {
-    return;
-  }
-
-  playAudio(clonedNode, startTime);
+  audio.pause();
+  audio.currentTime = 0;
 }

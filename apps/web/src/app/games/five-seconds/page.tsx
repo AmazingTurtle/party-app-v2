@@ -1,127 +1,153 @@
 'use client';
 
-import { useCallback, useRef, useState, type CSSProperties } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Outfit } from 'next/font/google';
 import {
-  motion,
+  animate,
   AnimatePresence,
-  useTime,
-  useTransform,
-  useMotionValueEvent,
+  motion,
+  useMotionTemplate,
   useMotionValue,
+  type AnimationPlaybackControls,
+  type MotionStyle,
+  type MotionValue,
 } from 'framer-motion';
 import { ColorTransition } from '@/_components/color-transition';
-import { playAudio } from '@/lib/audio';
-import { classNames } from '@/utils/class-names';
+import { playAudio, stopAudio } from '@/lib/audio';
 import { useRandomPool } from '@/utils/use-random-pool';
 import contentJson from './content.json';
 
 const outfit = Outfit({ subsets: ['latin'] });
+const timerDurationSeconds = 5;
+const transitionCooldownMilliseconds = 500;
 
-interface ProgressStyle extends CSSProperties {
+type TimerState =
+  | { status: 'idle' }
+  | { status: 'running'; prompt: string; runId: number }
+  | { status: 'expired'; prompt: string; runId: number };
+
+interface ProgressStyle {
   '--background-color': string;
   '--bar-background-color': string;
   '--bar-color': string;
-  '--progress-percent': string;
   '--bar-size': string;
+}
+
+interface AnimatedProgressStyle extends MotionStyle, ProgressStyle {
+  '--progress-percent': MotionValue<string>;
 }
 
 const progressStyle: ProgressStyle = {
   '--background-color': '#2C0C15',
   '--bar-background-color': '#641b30',
   '--bar-color': '#c83760',
-  '--progress-percent': '0%',
   '--bar-size': '12px',
 };
 
-export default function Home() {
-  const time = useTime();
-  const motionValue = useMotionValue(0);
-
-  const isRunningRef = useRef(false);
-
-  const transitionTime = 500;
-  const [lastChange, setLastChange] = useState(0);
-
+export default function FiveSecondsPage() {
+  const getNextItem = useRandomPool(contentJson.questions);
+  const progress = useMotionValue(0);
+  const progressPercent = useMotionTemplate`${progress}%`;
+  const animationRef = useRef<AnimationPlaybackControls>(null);
+  const runIdRef = useRef(0);
+  const lastStartedAtRef = useRef(Number.NEGATIVE_INFINITY);
   const clockTickingAudioRef = useRef<HTMLAudioElement>(null);
   const bingAudioRef = useRef<HTMLAudioElement>(null);
+  const [timer, setTimer] = useState<TimerState>({ status: 'idle' });
 
-  const [getNextItem] = useRandomPool(contentJson.questions);
+  const handleTimerComplete = useCallback((runId: number) => {
+    if (runIdRef.current !== runId) {
+      return;
+    }
 
-  const startSoundEffect = useCallback(() => {
-    playAudio(clockTickingAudioRef.current);
+    stopAudio(clockTickingAudioRef.current);
+    playAudio(bingAudioRef.current, 0.1);
+    setTimer((currentTimer) =>
+      currentTimer.status === 'running' && currentTimer.runId === runId
+        ? { ...currentTimer, status: 'expired' }
+        : currentTimer,
+    );
   }, []);
 
-  const [prompt, setPrompt] = useState<string | undefined>(undefined);
-  const onClickNext = useCallback(() => {
-    if (lastChange + transitionTime > time.get()) return;
-    setLastChange(time.get());
-    setPrompt(getNextItem());
-    startSoundEffect();
+  const handleNext = useCallback(() => {
+    const now = performance.now();
 
-    isRunningRef.current = true;
-  }, [getNextItem, lastChange, startSoundEffect, time]);
-
-  /*useEffect(() => {
-    setPrompt(getNextItem().question);
-    startSoundEffect();
-  }, [getNextItem, startSoundEffect]);*/
-
-  const progressBarRef = useRef<HTMLDivElement>(null);
-  const progress = useTransform(motionValue, [0, 5000], [0, 100]);
-
-  useMotionValueEvent(time, 'change', (value) => {
-    motionValue.set(value - lastChange);
-  });
-
-  useMotionValueEvent(progress, 'change', (value) => {
-    if (!isRunningRef.current) return;
-    const progressBarDiv =
-      progressBarRef.current ?? document.getElementById('progress-bar');
-    progressBarDiv?.style.setProperty(
-      '--progress-percent',
-      `${value.toFixed(2)}%`,
-    );
-
-    if (value + 0.0001 >= 100) {
-      isRunningRef.current = false;
-
-      if (clockTickingAudioRef.current) {
-        clockTickingAudioRef.current.pause();
-        clockTickingAudioRef.current.currentTime = 0;
-      }
-      if (/Android|iPhone/i.test(navigator.userAgent)) return;
-      playAudio(bingAudioRef.current, 0.1);
+    if (now - lastStartedAtRef.current < transitionCooldownMilliseconds) {
+      return;
     }
-  });
+
+    lastStartedAtRef.current = now;
+    runIdRef.current += 1;
+    const runId = runIdRef.current;
+
+    animationRef.current?.stop();
+    stopAudio(clockTickingAudioRef.current);
+    stopAudio(bingAudioRef.current);
+    progress.set(0);
+    setTimer({ status: 'running', prompt: getNextItem(), runId });
+    playAudio(clockTickingAudioRef.current);
+
+    animationRef.current = animate(progress, 100, {
+      duration: timerDurationSeconds,
+      ease: 'linear',
+      onComplete() {
+        handleTimerComplete(runId);
+      },
+    });
+  }, [getNextItem, handleTimerComplete, progress]);
+
+  useEffect(() => {
+    const clockTickingAudio = clockTickingAudioRef.current;
+    const bingAudio = bingAudioRef.current;
+
+    return () => {
+      runIdRef.current += 1;
+      animationRef.current?.stop();
+      stopAudio(clockTickingAudio);
+      stopAudio(bingAudio);
+    };
+  }, []);
+
+  const prompt =
+    timer.status === 'idle'
+      ? 'Drücke auf Start wenn du bereit bist'
+      : timer.prompt;
+  const statusMessage =
+    timer.status === 'idle'
+      ? 'Timer bereit'
+      : timer.status === 'running'
+        ? 'Fünf-Sekunden-Timer läuft'
+        : 'Zeit abgelaufen';
+  const animatedProgressStyle: AnimatedProgressStyle = {
+    ...progressStyle,
+    '--progress-percent': progressPercent,
+  };
 
   return (
     <div className="flex w-full grow items-center text-left">
-      <audio
-        src="/sounds/clock-ticking.mp3"
-        autoPlay={false}
-        ref={clockTickingAudioRef}
-      />
-      <audio src="/sounds/bing.mp3" autoPlay={false} ref={bingAudioRef} />
-      <ColorTransition targetColor="#2C0C15" key={lastChange} />
+      <audio src="/sounds/clock-ticking.mp3" ref={clockTickingAudioRef} />
+      <audio src="/sounds/bing.mp3" ref={bingAudioRef} />
+      <ColorTransition targetColor="#2C0C15" />
       <div className="flex w-full flex-col items-center gap-8">
-        <div className="relative size-[min(72vw,45vh,24rem)] text-center text-lg lg:text-2xl">
-          <AnimatePresence>
+        <div role="status" aria-live="polite" className="sr-only">
+          {statusMessage}
+        </div>
+        <div className="relative size-[min(72vw,45dvh,24rem)] text-center text-lg lg:text-2xl">
+          <AnimatePresence mode="wait">
             <motion.div
               key={prompt}
               initial={{ translateX: '-50%', opacity: 0 }}
               animate={{ translateX: 0, opacity: 1 }}
               exit={{ translateX: '50%', opacity: 0 }}
-              className={classNames(outfit.className)}
+              className={outfit.className}
             >
-              <div
+              <motion.div
+                aria-hidden="true"
                 className="radial-progress absolute inset-0"
-                style={progressStyle}
-                ref={progressBarRef}
-                id="progress-bar"
+                style={animatedProgressStyle}
               />
               <div className="absolute inset-0 flex items-center justify-center p-8">
-                {prompt ?? 'Drücke auf Start wenn du bereit bist'}
+                {prompt}
               </div>
             </motion.div>
           </AnimatePresence>
@@ -130,9 +156,9 @@ export default function Home() {
           <button
             type="button"
             className="button !bg-fuchsia-900/50"
-            onClick={onClickNext}
+            onClick={handleNext}
           >
-            {prompt === undefined ? 'Starten' : 'Weiter'}
+            {timer.status === 'idle' ? 'Starten' : 'Weiter'}
           </button>
         </div>
       </div>

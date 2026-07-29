@@ -20,15 +20,20 @@ coordination remain server-owned where possible.
 
 Serwist integrates with Turbopack. The typed service-worker source is compiled
 into ignored output, and the `/serwist/[path]` handler serves the generated
-worker. `/~offline` is the document fallback.
+worker. `/~offline` is the document fallback. The install manifest contains the
+app shell but excludes cards and audio. A client-side warmer requests those
+optional assets through Serwist after load and browser idle time, four at a
+time. It defers on Data Saver, `slow-2g`, and `2g` connections.
 
 ## State and Content
 
 Games own transient state locally. There is no backend, database, account,
 shared store, or persisted game session.
 
-Game content is imported from route-local JSON. Random pools copy the source
-catalog, return every item once per cycle, and never mutate imported content.
+Prompt content is imported from route-local JSON. The standard 52-card deck,
+asset URLs, and German card labels have one typed app-local owner. Random pools
+copy the source catalog, return every item once per cycle, avoid a repeat at the
+cycle boundary, and never mutate imported content.
 
 ## Verification
 

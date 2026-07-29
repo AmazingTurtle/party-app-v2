@@ -7,7 +7,7 @@ vi.mock('@/_components/color-transition', () => ({
 }));
 
 describe('home page', () => {
-  it('links to every available party game', () => {
+  it('links to every available party game and hides unavailable games', () => {
     render(<HomePage />);
 
     expect(
@@ -22,10 +22,9 @@ describe('home page', () => {
     expect(
       screen.getByRole('link', { name: /Big Kings Cup/i }),
     ).toHaveAttribute('href', '/games/big-kings-cup');
-    expect(screen.getByRole('link', { name: /Gigalo/i })).toHaveAttribute(
-      'href',
-      '/games/gigalo',
-    );
+    expect(
+      screen.queryByRole('link', { name: /Gigalo/i }),
+    ).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Bus Fahrer/i })).toHaveAttribute(
       'href',
       '/games/bus-driver',

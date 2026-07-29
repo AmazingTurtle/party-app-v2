@@ -1,30 +1,38 @@
 'use client';
 
-import { useMemo } from 'react';
-import { useMotionValueEvent, useTime, useTransform } from 'framer-motion';
+import { useEffect } from 'react';
+import { animate, useReducedMotion } from 'framer-motion';
 
 export interface ColorTransitionProps {
   targetColor: string;
 }
 
 export function ColorTransition({ targetColor }: ColorTransitionProps) {
-  const time = useTime();
-  const currentColor = useMemo(() => {
-    return typeof document !== 'undefined'
-      ? document.documentElement.style.getPropertyValue(
-          '--background-start-hex',
-        )
-      : '#0a1012';
-  }, []);
-  const transitionColor = useTransform(
-    time,
-    [0, 250],
-    [currentColor, targetColor],
-    { clamp: true },
-  );
+  const prefersReducedMotion = useReducedMotion();
 
-  useMotionValueEvent(transitionColor, 'change', (value) => {
-    document.documentElement.style.setProperty('--background-start-hex', value);
-  });
+  useEffect(() => {
+    const root = document.documentElement;
+    const currentColor = getComputedStyle(root)
+      .getPropertyValue('--background-start-hex')
+      .trim();
+
+    if (prefersReducedMotion) {
+      root.style.setProperty('--background-start-hex', targetColor);
+      return;
+    }
+
+    const controls = animate(currentColor || targetColor, targetColor, {
+      duration: 0.25,
+      ease: 'easeInOut',
+      onUpdate(value) {
+        root.style.setProperty('--background-start-hex', value);
+      },
+    });
+
+    return () => {
+      controls.stop();
+    };
+  }, [prefersReducedMotion, targetColor]);
+
   return null;
 }

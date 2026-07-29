@@ -14,50 +14,43 @@
   }
 }
 
-@supports (-webkit-touch-callout: none) {
-  /*noinspection CssInvalidPropertyValue*/
-  .min-h-screen {
-    min-height: -webkit-fill-available;
-  }
-}
-
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
-          -165deg,
-          transparent 0%,
-          var(--background-end-hex) 100%
-  )
-  var(--background-start-hex);
+      -165deg,
+      transparent 0%,
+      var(--background-end-hex) 100%
+    )
+    var(--background-start-hex);
 }
 
 .legal-container a,
 a.link {
-  @apply text-teal-800 dark:text-teal-200
+  @apply text-teal-800 dark:text-teal-200;
 }
 
 .legal-container {
-  @apply break-words overflow-ellipsis overflow-hidden mb-32
+  @apply mb-32 overflow-hidden break-words text-ellipsis;
 }
 
 .legal-container a {
-  @apply break-all
+  @apply break-all;
 }
 
 .legal-container h1 {
-  @apply text-3xl
+  @apply text-3xl;
 }
 
 .legal-container h2 {
-  @apply text-2xl
+  @apply text-2xl;
 }
 
 .legal-container h3 {
-  @apply text-xl
+  @apply text-xl;
 }
 
 .legal-container p {
-  @apply opacity-80
+  @apply opacity-80;
 }
 
 .legal-container h1,
@@ -65,50 +58,47 @@ a.link {
 .legal-container h3,
 .legal-container p,
 .legal-container ul {
-  @apply mx-4 mb-4
+  @apply mx-4 mb-4;
 }
 
 .legal-container ul {
-  @apply ml-8
+  @apply ml-8;
 }
 
 .legal-container li {
-  @apply list-disc
+  @apply list-disc;
 }
 
 .button {
-  @apply bg-white/5 text-white font-bold py-4 px-8 rounded-xl transition-all outline outline-2 outline-offset-2 outline-transparent hover:outline-white/20 active:outline-white/40
+  @apply rounded-xl bg-white/5 px-8 py-4 font-bold text-white outline-2 outline-offset-2 outline-transparent transition-all hover:outline-white/20 focus-visible:outline-white/60 active:outline-white/40;
 }
 
 .game-link {
-  @apply rounded-xl border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-white/5 hover:dark:bg-black/50 bg-gradient-to-tl dark:from-[#01101220] dark:to-[#011012ff] from-[#dee0e520] to-[#Dee0e5ff] shadow-lg
+  @apply rounded-xl border border-transparent bg-linear-to-tl from-[#dee0e520] to-[#Dee0e5ff] px-5 py-4 shadow-lg transition-colors hover:border-gray-300 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60 dark:from-[#01101220] dark:to-[#011012ff] hover:dark:border-white/5 hover:dark:bg-black/50;
 }
 
 .game-link h2 {
-  @apply mb-2 text-2xl font-semibold
+  @apply mb-2 text-2xl font-semibold;
 }
 
 .game-link p {
-  @apply m-0 text-sm opacity-50
+  @apply m-0 text-sm opacity-50;
 }
 
-.game-never {
-
-}
 .game-truth-or-dare {
-  @apply from-[#080c2720] to-[#080c27ff]
+  @apply from-[#080c2720] to-[#080c27ff];
 }
+
 .game-kings-cup {
-  @apply from-[#18062120] to-[#180621ff]
+  @apply from-[#18062120] to-[#180621ff];
 }
-.game-gigalo {
-  @apply from-[#23050520] to-[#230505ff]
-}
+
 .game-bus-driver {
-  @apply from-[#12100420] to-[#121004ff]
+  @apply from-[#12100420] to-[#121004ff];
 }
+
 .game-five-seconds {
-  @apply from-[#2C0C1520] to-[#2C0C15ff]
+  @apply from-[#2C0C1520] to-[#2C0C15ff];
 }
 
 .radial-progress {
@@ -117,6 +107,24 @@ a.link {
   aspect-ratio: 1/1;
   border-radius: 50%;
   background:
-          radial-gradient(closest-side, var(--background-color) calc(100% - 1px - var(--bar-size)), transparent calc(100% - var(--bar-size))),
-          conic-gradient(var(--bar-color) var(--progress-percent), var(--bar-background-color) 0);
+    radial-gradient(
+      closest-side,
+      var(--background-color) calc(100% - 1px - var(--bar-size)),
+      transparent calc(100% - var(--bar-size))
+    ),
+    conic-gradient(
+      var(--bar-color) var(--progress-percent),
+      var(--bar-background-color) 0
+    );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

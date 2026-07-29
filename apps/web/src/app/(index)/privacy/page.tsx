@@ -3,9 +3,10 @@ import Link from 'next/link';
 import { ColorTransition } from '@/_components/color-transition';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | The Party App',
+  title: 'Privacy Policy',
   description:
     'How The Party App handles technical request data and local browser storage.',
+  alternates: { canonical: '/privacy' },
 };
 
 export default function PrivacyPage() {

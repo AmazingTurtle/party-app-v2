@@ -4,13 +4,26 @@ import { createRandomPool } from './use-random-pool';
 describe('createRandomPool', () => {
   it('returns every item exactly once before starting a new cycle', () => {
     const nextItem = createRandomPool(['first', 'second', 'third'], () => 0);
+    const firstCycle = [nextItem(), nextItem(), nextItem()];
 
-    expect([nextItem(), nextItem(), nextItem()]).toStrictEqual([
-      'first',
-      'second',
-      'third',
-    ]);
-    expect(nextItem()).toBe('first');
+    expect(new Set(firstCycle)).toStrictEqual(
+      new Set(['first', 'second', 'third']),
+    );
+    expect(firstCycle).toHaveLength(3);
+  });
+
+  it('does not repeat the final item when a new cycle starts', () => {
+    const randomValues = [0, 0, 0, 0.5];
+    const nextItem = createRandomPool(
+      ['first', 'second', 'third'],
+      () => randomValues.shift() ?? 0,
+    );
+
+    nextItem();
+    nextItem();
+    const finalItem = nextItem();
+
+    expect(nextItem()).not.toBe(finalItem);
   });
 
   it('does not mutate the source collection', () => {
@@ -39,4 +52,14 @@ describe('createRandomPool', () => {
       );
     },
   );
+
+  it('draws a large cycle without losing or duplicating items', () => {
+    const sourceItems = Array.from({ length: 10_000 }, (_, index) => index);
+    const nextItem = createRandomPool(sourceItems, () => 0.42);
+    const drawnItems = Array.from({ length: sourceItems.length }, nextItem);
+
+    expect(new Set(drawnItems).size).toBe(sourceItems.length);
+    expect(sourceItems[0]).toBe(0);
+    expect(sourceItems.at(-1)).toBe(9_999);
+  });
 });

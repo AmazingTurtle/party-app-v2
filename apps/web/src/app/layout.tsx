@@ -1,15 +1,18 @@
 import type { ReactNode } from 'react';
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
-import { SerwistProvider } from '@serwist/turbopack/react';
-import { classNames } from '@/utils/class-names';
+import { AppProviders } from '@/_components/app-providers';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://new.thepartyapp.xyz'),
   applicationName: 'The Party App',
-  title: 'The Party App',
+  title: {
+    default: 'The Party App',
+    template: '%s | The Party App',
+  },
   description: 'Eine Party App für die Party People',
   icons: ['/logo-1024x1024.png'],
   appleWebApp: {
@@ -18,14 +21,10 @@ export const metadata: Metadata = {
     statusBarStyle: 'black-translucent',
     startupImage: '/logo-1024x1024.png',
   },
-  alternates: {
-    canonical: 'https://new.thepartyapp.xyz/',
-  },
   openGraph: {
     title: 'Party App',
     description: 'Eine Party App für die Party People',
     type: 'website',
-    url: 'https://new.thepartyapp.xyz/',
     images: [
       {
         type: 'image/png',
@@ -56,8 +55,8 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="de">
-      <body className={classNames(inter.className, 'relative')}>
-        <SerwistProvider swUrl="/serwist/sw.js">{children}</SerwistProvider>
+      <body className={`${inter.className} relative`}>
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );

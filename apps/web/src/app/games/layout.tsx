@@ -5,7 +5,7 @@ import { LegalLinks } from '@/_components/legal-links';
 
 export default function GamesLayout({ children }: { children: ReactNode }) {
   return (
-    <main className="flex min-h-screen flex-col items-center overflow-hidden p-4 lg:p-24">
+    <main className="flex min-h-dvh flex-col items-center overflow-hidden p-4 lg:p-24">
       <div className="z-10 w-full max-w-5xl flex-col text-sm">
         <div className="fixed bottom-0 left-0 flex h-32 w-full flex-col items-center justify-end bg-gradient-to-t from-white via-white pb-4 lg:static lg:h-auto lg:w-auto lg:bg-none dark:from-black dark:via-black">
           <Link
@@ -29,7 +29,7 @@ export default function GamesLayout({ children }: { children: ReactNode }) {
           &lt;- Zurück zur Startseite
         </Link>
       </div>
-      <div className="flex grow pb-32">{children}</div>
+      <div className="flex min-h-0 grow pb-32 lg:pb-0">{children}</div>
     </main>
   );
 }

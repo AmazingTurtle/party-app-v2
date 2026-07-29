@@ -1,8 +1,13 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import { ColorTransition } from '@/_components/color-transition';
 import { GameLink } from '@/_components/game-link';
 
-export default function Home() {
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+};
+
+export default function HomePage() {
   return (
     <>
       <ColorTransition targetColor={'#0a1012'} />
@@ -37,13 +42,6 @@ export default function Home() {
           className="game-kings-cup"
           title="Big Kings Cup"
           description="Das ultimative Trinkspiel für die ganze Party."
-        />
-
-        <GameLink
-          href="/games/gigalo"
-          className="game-gigalo"
-          title="Gigalo"
-          description="Definitiv nicht Picolo. Aber auch ein tolles Trinkspiel."
         />
 
         <GameLink

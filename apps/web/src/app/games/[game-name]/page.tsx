@@ -1,9 +1,21 @@
+import type { Metadata } from 'next';
 import { ColorTransition } from '@/_components/color-transition';
 
 export interface MissingGamePageProps {
   params: Promise<{
     'game-name': string;
   }>;
+}
+
+export async function generateMetadata({
+  params,
+}: MissingGamePageProps): Promise<Metadata> {
+  const { 'game-name': gameName } = await params;
+
+  return {
+    title: `Unbekanntes Spiel: ${gameName}`,
+    robots: { index: false, follow: false },
+  };
 }
 
 export default async function MissingGamePage({
